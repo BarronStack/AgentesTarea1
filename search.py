@@ -187,9 +187,53 @@ def nullHeuristic(state, problem=None):
 
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    
+    print("Start:", problem.getStartState())
+    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
+    #print("Start possible actions",problem.expand(problem.getStartState()))
+    #print("Start possible actions",problem.getActions(problem.getStartState()))
 
+    node = {"state":problem.getStartState(),"actions":[],"cost":0}
+    
+    frontier = util.PriorityQueue()
+    frontier.update(node,0)
+
+    explored = []   
+    while not frontier.isEmpty():
+        
+        node = frontier.pop()
+        currentState = node["state"]
+        actionsState = node["actions"]
+        costState    = node["cost"]
+
+        currentNode = {"state":currentState,"cost":costState}
+        explored.append(currentNode)
+
+        if problem.isGoalState(currentState):
+                return actionsState
+        else:
+            successors = problem.expand(currentState)
+            for successor in successors:
+                newActionState = actionsState + [successor[1]]
+                newCostState   = problem.getCostOfActionSequence(newActionState)
+                newNode = {"state":successor[0],"actions":newActionState,"cost":newCostState}
+                
+                path = False
+                for exploredNode in explored:
+
+                    exploredState = exploredNode["state"]
+                    exploredCost =  exploredNode["cost"]
+
+                    if (newNode["state"] == exploredState) and (newNode["cost"] >= exploredCost):
+                        path = True
+                
+                if not path:
+                    nodePriority = newCostState + nullHeuristic(newNode["state"])
+                    # print("Priority",nodePriority)
+                    frontier.update(newNode,nodePriority)
+
+    return newActionState
+            
 
 # Abbreviations
 bfs = breadthFirstSearch

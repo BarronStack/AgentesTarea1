@@ -20,16 +20,6 @@ depth first search (dfs), run the following command:
 
 > python pacman.py -p SearchAgent -a fn=depthFirstSearch
 
-Commands to invoke other search strategies can be found in the project
-description.
-
-Please only change the parts of the file you are asked to.  Look for the lines
-that say
-
-"*** YOUR CODE HERE ***"
-
-The parts you fill in start about 3/4 of the way down.  Follow the project
-description for details.
 
 Good luck and happy searching!
 """
@@ -48,13 +38,6 @@ class GoWestAgent(Agent):
         "The agent receives a GameState (defined in pacman.py)."
         if Directions.WEST in state.getLegalPacmanActions():
             return Directions.WEST
-        elif Directions.SOUTH in state.getLegalPacmanActions():
-            return Directions.SOUTH
-        elif Directions.EAST in state.getLegalPacmanActions():
-            return Directions.EAST
-        elif Directions.NORTH in state.getLegalPacmanActions():
-            return Directions.NORTH
-
         else:
             return Directions.STOP
 
