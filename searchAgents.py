@@ -58,13 +58,9 @@ class SearchAgent(Agent):
     Options for fn include:
       depthFirstSearch or dfs
       breadthFirstSearch or bfs
-
-
-    Note: You should NOT change any code in SearchAgent
     """
 
     def __init__(self, fn='depthFirstSearch', prob='PositionSearchProblem', heuristic='nullHeuristic'):
-        # Warning: some advanced Python magic is employed below to find the right functions and problems
 
         # Get the search function from the name and heuristic
         if fn not in dir(search):
@@ -272,6 +268,7 @@ def euclideanHeuristic(position, problem, info={}):
     xy2 = problem.goal
     return ( (xy1[0] - xy2[0]) ** 2 + (xy1[1] - xy2[1]) ** 2 ) ** 0.5
 
+
 #####################################################
 # This portion is incomplete.  Time to write code!  #
 #####################################################
@@ -279,7 +276,6 @@ def euclideanHeuristic(position, problem, info={}):
 class CornersProblem(search.SearchProblem):
     """
     This search problem finds paths through all four corners of a layout.
-
     You must select a suitable state space and child function
     """
 
@@ -294,25 +290,44 @@ class CornersProblem(search.SearchProblem):
         for corner in self.corners:
             if not startingGameState.hasFood(*corner):
                 print('Warning: no food in corner ' + str(corner))
-        self._expanded = 0 # DO NOT CHANGE; Number of search nodes expanded
-        # Please add any code here which you would like to use
-        # in initializing the problem
-        "*** YOUR CODE HERE ***"
+        
+         # DO NOT CHANGE; Number of search nodes expanded
+        self._expanded = 0
+        
+        corners = [False,False,False,False]
+        if self.startingPosition == self.corners[0]:
+            corners[0] = True
+        
+        if self.startingPosition == self.corners[1]:
+            corners[1] = True
+        
+        if self.startingPosition == self.corners[2]:
+            corners[2] = True
+        
+        if self.startingPosition == self.corners[3]:
+            corners[3] = True
+
+        self.startingState = {"state": self.startingPosition ,"corners":corners}
+        
 
     def getStartState(self):
         """
         Returns the start state (in your state space, not the full Pacman state
         space)
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return self.startingPosition        
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        visited = state["corners"]
+
+        if visited[0] and visited[1] and visited[2] and visited[3]:
+            return True
+        else:
+            return False
+
 
     def expand(self, state):
         """
@@ -331,6 +346,14 @@ class CornersProblem(search.SearchProblem):
             # You should call getActions, getActionCost, and getNextState.
             "*** YOUR CODE HERE ***"
 
+
+            nextState = self.getNextState(state, action)
+            cost = self.getActionCost(state, action, nextState)
+            children.append( ( nextState, action, cost) )
+
+
+
+
         self._expanded += 1 # DO NOT CHANGE
         return children
 
@@ -345,10 +368,12 @@ class CornersProblem(search.SearchProblem):
                 valid_actions_from_state.append(action)
         return valid_actions_from_state
 
+
     def getActionCost(self, state, action, next_state):
         assert next_state == self.getNextState(state, action), (
             "Invalid next state passed to getActionCost().")
         return 1
+
 
     def getNextState(self, state, action):
         assert action in self.getActions(state), (
