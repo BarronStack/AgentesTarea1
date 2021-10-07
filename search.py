@@ -18,6 +18,7 @@ Pacman agents (in searchAgents.py).
 """
 
 import util
+import searchAgents
 
 class SearchProblem:
     """
@@ -194,47 +195,49 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     #print("Start possible actions",problem.getActions(problem.getStartState()))
 
     node = {"state":problem.getStartState(),"actions":[],"cost":0}
-    
-    frontier = util.PriorityQueue()
-    frontier.update(node,0)
 
-    explored = []   
+    frontier = util.PriorityQueue()
+    frontier.push(node, 0)
+
+    #holds (state, cost)
+    explored = [] 
+
     while not frontier.isEmpty():
-        
+
         node = frontier.pop()
         currentState = node["state"]
         actionsState = node["actions"]
         costState    = node["cost"]
 
-        currentNode = {"state":currentState,"cost":costState}
-        explored.append(currentNode)
+        explored.append((currentState, costState))
 
         if problem.isGoalState(currentState):
-                return actionsState
+            return actionsState
+
         else:
             successors = problem.expand(currentState)
             for successor in successors:
-                newActionState = actionsState + [successor[1]]
-                newCostState   = problem.getCostOfActionSequence(newActionState)
-                newNode = {"state":successor[0],"actions":newActionState,"cost":newCostState}
-                
-                path = False
+                newCurrentState = successor[0]
+                newActionState  = actionsState + [successor[1]]
+                newCostState    = problem.getCostOfActionSequence(newActionState)
+
+                newNode = {"state":newCurrentState,"actions":newActionState,"cost":newCostState}
+
+                visited = False
                 for exploredNode in explored:
+                    exploredState, exploredCost = exploredNode
 
-                    exploredState = exploredNode["state"]
-                    exploredCost =  exploredNode["cost"]
+                    if (exploredState == newCurrentState) and (exploredCost <= newCostState):
+                        visited = True
 
-                    if (newNode["state"] == exploredState) and (newNode["cost"] >= exploredCost):
-                        path = True
-                
-                if not path:
-                    nodePriority = newCostState + nullHeuristic(newNode["state"])
-                    # print("Priority",nodePriority)
-                    frontier.update(newNode,nodePriority)
+                if not visited:
+                    newPriority = newCostState + heuristic(newCurrentState,problem)
 
-    return newActionState
-            
+                    frontier.push(newNode,newPriority)
+                    explored.append((newCurrentState,newCostState))
 
+    return actionsState
+  
 # Abbreviations
 bfs = breadthFirstSearch
 dfs = depthFirstSearch
