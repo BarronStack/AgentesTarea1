@@ -342,6 +342,7 @@ class CornersProblem(search.SearchProblem):
         """
 
         successors = []
+
         for action in self.getActions(state):
             nextState = self.getNextState(state,action)
             #print(nextState)
@@ -387,6 +388,13 @@ class CornersProblem(search.SearchProblem):
             "Invalid next state passed to getActionCost().")
         return 1
 
+        """
+        if (action == "South") or (action == "North"):
+            return 1
+        elif (action == "East") or (action == "West"):
+            return 2
+        """
+
 
     def getNextState(self, state, action):
         assert action in self.getActions(state), (
@@ -417,6 +425,43 @@ class CornersProblem(search.SearchProblem):
             if self.walls[x][y]: return 999999
         return len(actions)
 
+def closestCorner(state, corners):
+    # Define el valor inical con el que comparar
+    closeCorner = 0
+    closeCornerCost = util.manhattanDistance(state,corners[0])
+
+    # Explora todas las esquinas calculando la distancia esquina-punto
+    for i in range(len(corners)):
+        cornerLocation = corners[i]
+        distanceToCorner = util.manhattanDistance(state,cornerLocation)
+
+        # Obtiene el mínimo de ellas 
+        if distanceToCorner <= closeCornerCost: 
+            closeCorner = i
+            closeCornerCost = distanceToCorner
+
+    return (closeCorner,closeCornerCost)
+
+
+### Búsqueda del máximo entre la distancia de todas las esquinas con el punto actual
+def farthestCorner(state, corners):
+    # Define el valor inical con el que comparar
+    farCorner = 0
+    farCornerCost = util.manhattanDistance(state,corners[0])
+    
+    # Explora todas las esquinas calculando la distancia esquina-punto
+    for i in range(len(corners)):
+        cornerLocation = corners[i]
+        distanceToCorner = util.manhattanDistance(state,cornerLocation)
+
+        # Obtiene el máximo de ellas 
+        if distanceToCorner >= farCornerCost: 
+            farCorner = i
+            farCornerCost = distanceToCorner
+    
+    return ((farCorner,farCornerCost))
+
+
 
 def cornersHeuristic(state, problem):
     """
@@ -437,7 +482,32 @@ def cornersHeuristic(state, problem):
     corners = problem.corners 
     walls   = problem.walls 
 
-    return 0 # Default to trivial solution
+    heuristic = 0
+
+    currentState   = state[0]
+    currentCorners = state[1]
+
+    # Almacena las coordenadas de las esquinas no visitadas en una lista
+    unvisitedCorners = []
+    for i in range(len(currentCorners)):
+        if not currentCorners[i]:
+            unvisitedCorners.append(corners[i])
+
+    # Se aplica si hay esquinas que no han sido visitadas todavía
+    if len(unvisitedCorners) > 0:
+        closest,closestDistance = closestCorner(currentState, unvisitedCorners)
+        farthest,farthestDistance = farthestCorner(currentState, unvisitedCorners)
+
+        # Para determinar con que esquina y distancia está comparando
+        #print("Esquina cercana :",closest,closestDistance)
+        #print("Esquina lejana  :",farthest,farthestDistance)
+
+        closestCornerState = unvisitedCorners[closest]
+        farthestCornerState = unvisitedCorners[farthest]
+        farthestDistance = util.manhattanDistance(closestCornerState,farthestCornerState)
+
+        heuristic = closestDistance + farthestDistance
+    return heuristic
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
@@ -634,7 +704,7 @@ def mazeDistance(point1, point2, gameState):
     """
     x1, y1 = point1
     x2, y2 = point2
-    walls = gameState.getWalls()
+    walls = gameState
     assert not walls[x1][y1], 'point1 is a wall: ' + str(point1)
     assert not walls[x2][y2], 'point2 is a wall: ' + str(point2)
     prob = PositionSearchProblem(gameState, start=point1, goal=point2, warn=False, visualize=False)
