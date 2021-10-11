@@ -135,6 +135,11 @@ python3 pacman.py -l mediumMaze -p SearchAgent -a fn=dfs
 python3 pacman.py -l bigMaze -z .5 -p SearchAgent -a fn=dfs
 ~~~~
 
+
+<p align="center">
+ <img src="sample/dfs.gif" title=""/><figcaption align="center">Ejecución de DFS con mediumMaze</figcaption>
+</p>
+
 # Breath-First Search <div id="id2.2"></div>
 
 El algoritmo BFS (Búsqueda en anchura) es un tipo de algoritmo de búsqueda no informada utilizado para recorrer los posibles nodos de un grafo o árbol. Funciona expandiendo y explorando los nodos adyacentes a la posición de forma recursiva así recorriendo todos los vecinos sucesivamente hasta completar la búsqueda. 
@@ -205,6 +210,10 @@ python3 pacman.py -l mediumMaze -p SearchAgent -a fn=bfs
 ~~~~
 python3 pacman.py -l bigMaze -z .5 -p SearchAgent -a fn=bfs
 ~~~~
+
+<p align="center">
+ <img src="sample/bfs.gif" title=""/><figcaption align="center">Ejecución de BFS con mediumMaze</figcaption>
+</p>
 
 # A* Search <div id="id2.3"></div>
 
@@ -304,6 +313,9 @@ python3 pacman.py -l mediumMaze -p SearchAgent -a fn=astar,heuristic=manhattanHe
 python pacman.py -l bigMaze -z .5 -p SearchAgent -a fn=astar,heuristic=manhattanHeuristic
 ~~~~
 
+<p align="center">
+ <img src="sample/astar.gif" title=""/><figcaption align="center">Ejecución de A* con mediumMaze</figcaption>
+</p>
 
 # Problema : Encontrar las esquinas del mapa <div id="id3"></div>
 
@@ -432,7 +444,7 @@ python3 pacman.py -l bigCorners -p SearchAgent -a fn=bfs,prob=CornersProblem
 Para este problema, se realizaron modificaciónes en el ambiente de ejecución creando un nuevo laberinto *originalCorners* basado en el laberinto original de Pacman con el cual poder probar su funcionamiento. Esto debido a que la problemática forma base para la resolución con la heuristica del problema a continuación.
 
 <p align="center">
- <img src="originalCorners.png" title="originalCorners Maze"/>
+ <img src="sample/originalCorners.png" title="originalCorners Maze"/>
 </p>
 
 En este caso, el agente comienza en el centro del laberinto en la posición original de los fantasmas del juego, mientras que los objetivos se encuentran en las esquinas del mapa, cuyas coordenadas dependen de las dimensiones del esquema. Para poder ejecutar tal situación, se debe utilizar el siguiente comando:
@@ -444,7 +456,7 @@ python3 pacman.py -l originalCorners -z .5 -p SearchAgent -a fn=bfs,prob=Corners
 Una vez ejecutado se obtienen los siguientes resultados para la problemática ejecutada en un nuevo ambiente de laberinto.
 
 <p align="center">
- <img src="cornersProblem_result.png" title="originalCorners Solution with CornersProblem"/>
+ <img src="sample/cornersProblem_result.png" title="originalCorners Solution with CornersProblem"/>
 </p>
 
 Dichos resultados se intentarán comparar a continuación con la implementación del problema de una heuristica que permita encontrar las esquinas del mapa utilizando el algoritmo A* y la heuristica definida.
@@ -577,15 +589,15 @@ python3 pacman.py -l originalCorners -z .5 -p SearchAgent -a fn=aStarSearch,prob
 Una vez ejecutado se obtienen los siguientes resultados para la problemática ejecutada en un nuevo ambiente de laberinto.
 
 <p align="center">
- <img src="cornersHeuristic_result.png" title="originalCorners Solution with CornersHeuristic"/>
+ <img src="sample/cornersHeuristic_result.png" title="originalCorners Solution with CornersHeuristic"/>
 </p>
 
 Al comparar con la solución previa en el problema de encontrar las esquinas sin utilizar una heuristica, se puede ver con claridad una mejora en el número de nodos expandidos. Esto producto de la heuristica aplicada donde el problema de las esquinas con heuristica expande 2623 nodos mientras que el problema de encontrar las esquinas sin heuristica expande hasta 4273 nodos. Ambos con un mismo coste predictivo y un puntaje promedio igual producto que logran encontrar las 4 esquinas.
 
 <table align="center"><tr>
-<td> <img src="cornersProblem.gif"   title="originalCorners Solution with CornersHeuristic"/><figcaption align="center">Corners Problem</figcaption>
+<td> <img src="sample/cornersProblem.gif"   title="originalCorners Solution with CornersHeuristic"/><figcaption align="center">Corners Problem</figcaption>
 </td>
-<td> <img src="cornersHeuristic.gif" title="originalCorners Solution with CornersHeuristic"/><figcaption align="center">Corners Heuristic</figcaption>
+<td> <img src="sample/cornersHeuristic.gif" title="originalCorners Solution with CornersHeuristic"/><figcaption align="center">Corners Heuristic</figcaption>
 </td>
 </tr></table>
 
