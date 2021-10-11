@@ -232,6 +232,7 @@ class PositionSearchProblem(search.SearchProblem):
             cost += self.costFn((x,y))
         return cost
 
+
 class StayEastSearchAgent(SearchAgent):
     """
     An agent for position search with a cost function that penalizes being in
@@ -307,7 +308,7 @@ class CornersProblem(search.SearchProblem):
         if self.startingPosition == self.corners[3]:
             corners[3] = True
 
-        self.startingState = {"state": self.startingPosition ,"corners":corners}
+        self.startingState = (self.startingPosition,corners)
         
 
     def getStartState(self):
@@ -315,13 +316,13 @@ class CornersProblem(search.SearchProblem):
         Returns the start state (in your state space, not the full Pacman state
         space)
         """
-        return self.startingPosition        
+        return self.startingState        
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
-        visited = state["corners"]
+        visited = state[1]
 
         if visited[0] and visited[1] and visited[2] and visited[3]:
             return True
@@ -340,32 +341,44 @@ class CornersProblem(search.SearchProblem):
             is the incremental cost of expanding to that child
         """
 
-        children = []
+        successors = []
         for action in self.getActions(state):
-            # Add a child state to the child list if the action is legal
-            # You should call getActions, getActionCost, and getNextState.
-            "*** YOUR CODE HERE ***"
+            nextState = self.getNextState(state,action)
+            #print(nextState)
 
+            ## Debo chequear si el nuevo punto corresponde a alguna de las esquinas. 
+            corners = list(state[1])
 
-            nextState = self.getNextState(state, action)
-            cost = self.getActionCost(state, action, nextState)
-            children.append( ( nextState, action, cost) )
+            if nextState == self.corners[0]:
+                corners[0] = True
+        
+            if nextState == self.corners[1]:
+                corners[1] = True
+        
+            if nextState == self.corners[2]:
+                corners[2] = True
+        
+            if nextState == self.corners[3]:
+                corners[3] = True
 
-
-
+            costState = self.getActionCost(state, action, nextState)
+            successors.append(((nextState,tuple(corners)),action, costState,))
 
         self._expanded += 1 # DO NOT CHANGE
-        return children
+        return successors   
 
     def getActions(self, state):
         possible_directions = [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]
         valid_actions_from_state = []
         for action in possible_directions:
-            x, y = state[0]
+            x, y   = state[0]
             dx, dy = Actions.directionToVector(action)
             nextx, nexty = int(x + dx), int(y + dy)
-            if not self.walls[nextx][nexty]:
+            wall = self.walls[nextx][nexty]
+
+            if not wall:
                 valid_actions_from_state.append(action)
+        
         return valid_actions_from_state
 
 
@@ -381,10 +394,15 @@ class CornersProblem(search.SearchProblem):
         x, y = state[0]
         dx, dy = Actions.directionToVector(action)
         nextx, nexty = int(x + dx), int(y + dy)
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
-        # you will need to replace the None part of the following tuple.
-        return ((nextx, nexty), None)
+        wall = self.walls[nextx][nexty]
+
+        if not wall:
+            return (nextx,nexty)
+            #return ((nextx, nexty), None)
+
+            # Retornar solo las coordenadas y remover el None de las esquinas.
+            # Armar dicha lista al expandir los nodos en la función expand()
+
 
     def getCostOfActionSequence(self, actions):
         """
@@ -413,10 +431,12 @@ def cornersHeuristic(state, problem):
     shortest path from the state to a goal of the problem; i.e.  it should be
     admissible (as well as consistent).
     """
-    corners = problem.corners # These are the corner coordinates
-    walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
-    "*** YOUR CODE HERE ***"
+    # These are the corner coordinates
+    # These are the walls of the maze, as a Grid (game.py)
+    corners = problem.corners 
+    walls   = problem.walls 
+
     return 0 # Default to trivial solution
 
 class AStarCornersAgent(SearchAgent):
