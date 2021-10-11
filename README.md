@@ -14,6 +14,7 @@ El objetivo de esta tarea involucra la implementación de algoritmos de búsqued
     * [A* Search](#id2.3)
 4. [Problema : Encontrar las esquinas del mapa](#id3)
 5. [Problema : Heuristica para encontrar las esquinas mapa](#id4)
+6. [Video Explicativo](#id5)
 
 # Objetivos <div id="id0"></div>
 
@@ -24,8 +25,10 @@ El objetivo de esta tarea involucra la implementación de algoritmos de búsqued
     - A la heuristica utilizada para la búsqueda.
     - A los algoritmos propuestos.
 - Comente su código adecuadamente.
-- Genere un video explicativo de 5 minutos explicando su modificación y mostrando los resultados.
+- Genere un [video](https://drive.google.com/file/d/1lK4s7D_BS-D-MXQGpvUu48loqy45cBn6/view?usp=sharing
+) explicativo de 5 minutos explicando su modificación y mostrando los resultados.
 - Suba su código y reporte a [aula](aula.usm.cl). Debe incluir un link donde pueda visualizarse su video.
+
 
 # Getting Started <div id="id1"></div>
 
@@ -461,7 +464,7 @@ Una vez ejecutado se obtienen los siguientes resultados para la problemática ej
 
 Dichos resultados se intentarán comparar a continuación con la implementación del problema de una heuristica que permita encontrar las esquinas del mapa utilizando el algoritmo A* y la heuristica definida.
 
-# Problema : Heuristica para encontrar las esquinas mapa <div id="id2.4"></div> 
+# Problema : Heuristica para encontrar las esquinas mapa <div id="id4"></div> 
 
 El problema a continuación se basa en el caso anterior de poder encontrar, dado un laberinto, todas las esquinas del problema con una ruta oṕtima e idealmente con mejores resultaos que los obtenidos anteriormente. Además al tratarse de una heurística se posee cierta libertad en elegir la solución.
 
@@ -601,4 +604,12 @@ Al comparar con la solución previa en el problema de encontrar las esquinas sin
 </td>
 </tr></table>
 
+# Video Explicativo <div id="id5"></div>
 
+Aa continuación se adjunta el video explicativo para la demostración y explicación de las modificaciones realizadas a las problemáticas desarrolladas a lo largo de esta tarea. 
+
+Enlace al video: https://drive.google.com/file/d/1lK4s7D_BS-D-MXQGpvUu48loqy45cBn6/view?usp=sharing
+
+<video align="center" width="380" height="240" controls>
+  <source src="sample/zoom_0.mp4" type="video/mp4">
+</video>
