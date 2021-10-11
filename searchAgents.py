@@ -386,14 +386,13 @@ class CornersProblem(search.SearchProblem):
     def getActionCost(self, state, action, next_state):
         assert next_state == self.getNextState(state, action), (
             "Invalid next state passed to getActionCost().")
-        return 1
+        #return 1
 
-        """
         if (action == "South") or (action == "North"):
             return 1
         elif (action == "East") or (action == "West"):
             return 2
-        """
+
 
 
     def getNextState(self, state, action):

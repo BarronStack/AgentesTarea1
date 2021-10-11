@@ -441,8 +441,10 @@ En este caso, el agente comienza en el centro del laberinto en la posición orig
 python3 pacman.py -l originalCorners -z .5 -p SearchAgent -a fn=bfs,prob=CornersProblem
 ~~~~
 
+Una vez ejecutado se obtienen los siguientes resultados para la problemática ejecutada en un nuevo ambiente de laberinto.
+
 <p align="center">
- <img src="cornersProblem_result.png" title="originalCorners Solution"/>
+ <img src="cornersProblem_result.png" title="originalCorners Solution with CornersProblem"/>
 </p>
 
 Dichos resultados se intentarán comparar a continuación con la implementación del problema de una heuristica que permita encontrar las esquinas del mapa utilizando el algoritmo A* y la heuristica definida.
@@ -571,3 +573,20 @@ Alternativamente, se puede ejecutar el siguiente comando que es equivalente al a
 ~~~~
 python3 pacman.py -l originalCorners -z .5 -p SearchAgent -a fn=aStarSearch,prob=CornersProblem,heuristic=cornersHeuristic
 ~~~~ 
+
+Una vez ejecutado se obtienen los siguientes resultados para la problemática ejecutada en un nuevo ambiente de laberinto.
+
+<p align="center">
+ <img src="cornersHeuristic_result.png" title="originalCorners Solution with CornersHeuristic"/>
+</p>
+
+Al comparar con la solución previa en el problema de encontrar las esquinas sin utilizar una heuristica, se puede ver con claridad una mejora en el número de nodos expandidos. Esto producto de la heuristica aplicada donde el problema de las esquinas con heuristica expande 2623 nodos mientras que el problema de encontrar las esquinas sin heuristica expande hasta 4273 nodos. Ambos con un mismo coste predictivo y un puntaje promedio igual producto que logran encontrar las 4 esquinas.
+
+<table align="center"><tr>
+<td> <img src="cornersProblem.gif"   title="originalCorners Solution with CornersHeuristic"/><figcaption align="center">Corners Problem</figcaption>
+</td>
+<td> <img src="cornersHeuristic.gif" title="originalCorners Solution with CornersHeuristic"/><figcaption align="center">Corners Heuristic</figcaption>
+</td>
+</tr></table>
+
+
